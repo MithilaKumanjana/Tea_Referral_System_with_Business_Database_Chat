@@ -1,0 +1,24 @@
+services:
+  tea-business:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tea-business-app
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+      - OPENAI_API_KEY={Enter your OPENAI_API_KEY} # Add this line
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7860/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  default:
+    name: tea-business-network
